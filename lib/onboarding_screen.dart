@@ -1,7 +1,6 @@
 import 'package:appointment/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'Image_doc.dart';
 import 'core/theming/app_text.dart';
 import 'doc_logo_and_name.dart';
@@ -28,7 +27,7 @@ class OnBoardingScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Manage and schedule all of your medical appointments easily with Docdoc to get a new experience.',
+                      'Manage and schedule all of your medical appointments easily with Doctor to get a new experience.',
                       textAlign: TextAlign.center,
                       style: inter13w400(),
                     ),
