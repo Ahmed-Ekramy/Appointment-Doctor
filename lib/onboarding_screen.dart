@@ -2,6 +2,7 @@ import 'package:appointment/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'Image_doc.dart';
+import 'core/routing/route.dart';
 import 'core/theming/app_text.dart';
 import 'doc_logo_and_name.dart';
 
@@ -34,13 +35,15 @@ class OnBoardingScreen extends StatelessWidget {
                     SizedBox(height: 30.h,),
                     ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor:MaterialStateProperty.all(ColorManager.primaryColor),
+                            backgroundColor: MaterialStateProperty.all(
+                                ColorManager.primaryColor),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            minimumSize: MaterialStateProperty.all(Size(double.infinity,50.h))
+                            minimumSize: MaterialStateProperty.all(Size(double
+                                .infinity, 50.h))
                         ),
                         onPressed: () {
-
-                        }, child: Text("Get Started",style: inter16w600(),)),
+                          Navigator.pushNamed(context, Routes.login);
+                        }, child: Text("Get Started", style: inter16w600(),)),
                   ],
                 ),
               ),

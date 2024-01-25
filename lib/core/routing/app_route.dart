@@ -1,4 +1,5 @@
 import 'package:appointment/core/routing/route.dart';
+import 'package:appointment/feature/login/presentation/pages/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../onboarding_screen.dart';
 
@@ -9,6 +10,12 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return const OnBoardingScreen();
+          },
+        );
+        case Routes.login:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const LoginScreen();
           },
         );
       default:
