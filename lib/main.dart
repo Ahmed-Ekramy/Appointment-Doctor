@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'core/responsive_size.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,6 +12,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ResponsiveSize.init(context);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

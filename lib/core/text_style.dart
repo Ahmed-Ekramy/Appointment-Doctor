@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'responsive_size.dart';
 
 class AppTextStyle {
   // Bold (w700)
@@ -53,17 +54,23 @@ class AppTextStyle {
   static TextStyle regular12(BuildContext context)  => _style(context, 12,  FontWeight.w400);
   static TextStyle regular10(BuildContext context)  => _style(context, 10,  FontWeight.w400);
 
-  // Internal builder
-  static TextStyle _style(BuildContext context, double size, FontWeight weight) {
-    return TextStyle(
-      fontFamily: 'Inter',
-      fontSize: getResponsiveFontSize(context, fontSize: size),
-      fontWeight: weight,
-    );
+  // ── Responsive helpers ────────────────────────────────────────────────────
+
+  static double getScaleFactor(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
+    if (width < 800) {
+      return width / 550;
+    } else if (width < 1200) {
+      return width / 1000;
+    } else {
+      return width / 1920;
+    }
   }
 
-  // Responsive helpers
-  static double getResponsiveFontSize(BuildContext context, {required double fontSize}) {
+  static double getResponsiveFontSize(
+    BuildContext context, {
+    required double fontSize,
+  }) {
     double scaleFactor = getScaleFactor(context);
     double responsiveFontSize = fontSize * scaleFactor;
     double lowerLimit = fontSize * 0.8;
@@ -71,8 +78,13 @@ class AppTextStyle {
     return responsiveFontSize.clamp(lowerLimit, upperLimit);
   }
 
-  static double getScaleFactor(BuildContext context) {
-    double width = MediaQuery.sizeOf(context).width;
-    return width / 375;
+  // ── Internal builder ──────────────────────────────────────────────────────
+
+  static TextStyle _style(BuildContext context, double size, FontWeight weight) {
+    return TextStyle(
+      fontFamily: 'Inter',
+      fontSize: getResponsiveFontSize(context, fontSize: size),
+      fontWeight: weight,
+    );
   }
 }
