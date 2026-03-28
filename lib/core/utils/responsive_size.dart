@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 ///   16.sp   → scaled font size
 ///   12.r    → scaled radius / padding / margin
 class ResponsiveSize {
-
-
   ResponsiveSize._();
 
   // Design reference (Figma / XD base size)
