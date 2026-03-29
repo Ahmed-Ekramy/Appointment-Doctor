@@ -2,7 +2,6 @@ import 'package:doc/core/utils/responsive_size.dart';
 import 'package:doc/core/utils/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/app_images.dart';
 import '../../core/widgets/custom_button.dart';
