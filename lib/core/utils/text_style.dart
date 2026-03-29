@@ -7,6 +7,7 @@ class AppTextStyle {
   static TextStyle bold60(BuildContext context)  => _style(context, 60,  FontWeight.w700);
   static TextStyle bold48(BuildContext context)  => _style(context, 48,  FontWeight.w700);
   static TextStyle bold34(BuildContext context)  => _style(context, 34,  FontWeight.w700);
+  static TextStyle bold32(BuildContext context)  => _style(context, 32,  FontWeight.w700);
   static TextStyle bold24(BuildContext context)  => _style(context, 24,  FontWeight.w700);
   static TextStyle bold20(BuildContext context)  => _style(context, 20,  FontWeight.w700);
   static TextStyle bold18(BuildContext context)  => _style(context, 18,  FontWeight.w700);
@@ -82,7 +83,7 @@ class AppTextStyle {
 
   static TextStyle _style(BuildContext context, double size, FontWeight weight) {
     return TextStyle(
-      fontFamily: 'Inter',
+      // fontFamily: 'Inter',
       fontSize: getResponsiveFontSize(context, fontSize: size),
       fontWeight: weight,
     );
