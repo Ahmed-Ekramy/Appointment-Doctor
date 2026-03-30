@@ -38,6 +38,7 @@ dependencies:
   flutter_svg: ^2.2.4
   dio: ^5.9.2
   flutter_native_splash: ^2.4.7
+  font_awesome_flutter: ^11.0.0
 
 dev_dependencies:
   flutter_test:

@@ -57,7 +57,7 @@ class OnboardingView extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: AppTextStyle.bold32(
                               context,
-                            ).copyWith(color: AppColors.primary, height: 1.4),
+                            ).copyWith(color: AppColors.primary, height: 1.2),
                           ),
                         ],
                       ),
@@ -71,7 +71,7 @@ class OnboardingView extends StatelessWidget {
                       Text(
                         "Manage and schedule all of your medical appointments easily\nwith Docdoc to get a new experience.",
                         textAlign: TextAlign.center,
-                        style: AppTextStyle.regular16(
+                        style: AppTextStyle.regular14(
                           context,
                         ).copyWith(color: AppColors.grey60),
                       ),
@@ -80,7 +80,9 @@ class OnboardingView extends StatelessWidget {
                         backgroundColor: AppColors.primary,
                         textColor: AppColors.backgroundWhite,
                         text: ' Get Started ',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
                         width: double.infinity,
                         height: 52,
                         radius: 16,
