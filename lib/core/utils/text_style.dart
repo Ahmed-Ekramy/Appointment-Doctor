@@ -59,13 +59,14 @@ class AppTextStyle {
 
   static double getScaleFactor(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
-    if (width < 800) {
-      return width / 550;
-    } else if (width < 1200) {
-      return width / 1000;
+    if (width < 600) {
+      return width / 400; // More appropriate for mobile
+    } else if (width < 900) {
+      return width / 700;
     } else {
-      return width / 1920;
-    }
+      return width / 1000;
+
+  }
   }
 
   static double getResponsiveFontSize(
@@ -83,7 +84,7 @@ class AppTextStyle {
 
   static TextStyle _style(BuildContext context, double size, FontWeight weight) {
     return TextStyle(
-      // fontFamily: 'Inter',
+      fontFamily: 'Inter',
       fontSize: getResponsiveFontSize(context, fontSize: size),
       fontWeight: weight,
     );
