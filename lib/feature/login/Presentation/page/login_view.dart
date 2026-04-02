@@ -23,16 +23,45 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundWhite,
-      body:
-      SafeArea(
+      body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
           child: BlocConsumer<LoginCubit, LoginState>(
             listener: (context, state) {
-              // TODO: implement listener
+              if (state is LoginSuccess) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.loginResponseModel.message!),
+                      backgroundColor: Colors.greenAccent,
+                    ),
+                );
+                Navigator.pushNamedAndRemoveUntil(context, Routes.layout, (route) => false);
+              } else if (state is LoginError) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.error),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              } else if (state is LoginLoading) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                );
+              }
+              return null;
             },
+
             builder: (context, state) {
               var cubit = LoginCubit.get(context);
+
               return Form(
                 key: cubit.formKey,
                 child: Column(
@@ -41,11 +70,11 @@ class LoginView extends StatelessWidget {
                     const LoginHeader(),
                     SizedBox(height: 36.h),
                     CustomTextFormField(
-                        borderRadius: 16.r,
-                        controller: cubit.emailController,
-                        hintText: 'Email',
-                        keyboardType: TextInputType.emailAddress,
-                        validator: AppValidators.email
+                      borderRadius: 16.r,
+                      controller: cubit.emailController,
+                      hintText: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                      validator: AppValidators.email,
                     ),
                     SizedBox(height: 16.h),
                     CustomTextFormField(
@@ -54,12 +83,15 @@ class LoginView extends StatelessWidget {
                       hintText: 'Password',
                       obscureText: cubit.isPasswordVisible,
                       suffixIcon: InkWell(
-                          onTap: () {
-                            cubit.changeVisibility();
-                          },
-                          child: Icon(cubit.isPasswordVisible ? Icons
-                              .visibility_off_outlined : Icons
-                              .visibility_outlined)),
+                        onTap: () {
+                          cubit.changeVisibility();
+                        },
+                        child: Icon(
+                          cubit.isPasswordVisible
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
                       validator: AppValidators.password,
                     ),
                     SizedBox(height: 16.h),
@@ -78,9 +110,7 @@ class LoginView extends StatelessWidget {
                       height: 52,
                       radius: 16,
                       onPressed: () {
-                        if (cubit.formKey.currentState!.validate()) {
-                          Navigator.pushNamed(context, Routes.register);
-                        }
+                        cubit.login();
                       },
                     ),
                     SizedBox(height: 46.h),
@@ -97,14 +127,3 @@ class LoginView extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-

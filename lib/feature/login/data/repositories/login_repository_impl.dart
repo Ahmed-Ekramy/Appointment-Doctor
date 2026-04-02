@@ -1,6 +1,9 @@
+import 'package:dartz/dartz.dart';
+
 import '../../domain/repositories/login_repository.dart';
 import '../datasources/login_remote_data_source.dart';
 import '../models/login_model.dart';
+import '../models/login_response_model.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   final LoginRemoteDataSource remoteDataSource;
@@ -8,14 +11,8 @@ class LoginRepositoryImpl implements LoginRepository {
   LoginRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<void> login({
+  Future<Either<String, LoginResponseModel>> login({
     required String email,
     required String password,
-  }) async {
-    final loginModel = LoginModel(
-      email: email,
-      password: password,
-    );
-    return await remoteDataSource.login(loginModel);
-  }
+  }) => remoteDataSource.login(LoginModel(email: email, password: password));
 }

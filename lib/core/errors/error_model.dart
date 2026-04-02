@@ -7,7 +7,7 @@ String errorModelToJson(ErrorModel data) => json.encode(data.toJson());
 
 class ErrorModel {
   String? message;
-  Data? data;
+  dynamic data; // Changed from Data? to dynamic to handle both Map and List
   bool? status;
   int? code;
 
@@ -15,14 +15,16 @@ class ErrorModel {
 
   factory ErrorModel.fromJson(Map<String, dynamic> json) => ErrorModel(
     message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    data: (json["data"] != null && json["data"] is Map<String, dynamic>)
+        ? Data.fromJson(json["data"])
+        : json["data"], // If it's a List or null, keep it as is
     status: json["status"],
     code: json["code"],
   );
 
   Map<String, dynamic> toJson() => {
     "message": message,
-    "data": data?.toJson(),
+    "data": data is Data ? (data as Data).toJson() : data,
     "status": status,
     "code": code,
   };

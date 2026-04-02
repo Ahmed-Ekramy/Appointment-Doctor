@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import '../../data/models/login_response_model.dart';
 import '../../domain/usecases/login_usecase.dart';
 
 part 'login_state.dart';
@@ -32,15 +33,11 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
       emit(LoginLoading());
-      try {
-        await loginUseCase.execute(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-        emit(LoginSuccess());
-      } catch (e) {
-        emit(LoginError(e.toString()));
-      }
+      var response = await loginUseCase.call(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      response.fold((l) => emit(LoginError(l)), (r) => emit(LoginSuccess(r)));
     }
   }
 

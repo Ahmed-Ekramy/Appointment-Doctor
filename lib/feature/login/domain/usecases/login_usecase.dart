@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../data/models/login_response_model.dart';
 import '../repositories/login_repository.dart';
 
 class LoginUseCase {
@@ -5,7 +8,7 @@ class LoginUseCase {
 
   LoginUseCase(this.repository);
 
-  Future<void> execute({
+  Future<Either<String, LoginResponseModel>> call({
     required String email,
     required String password,
   }) {
