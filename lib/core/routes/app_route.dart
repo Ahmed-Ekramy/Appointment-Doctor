@@ -1,27 +1,38 @@
 import 'package:doc/core/routes/route.dart';
 import 'package:doc/feature/login/Presentation/manager/login_cubit.dart';
+import 'package:doc/feature/sign_up/Presentation/manager/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../feature/login/Presentation/page/login_view.dart';
 import '../../feature/onboarding/onboarding.dart';
+import '../../feature/sign_up/Presentation/page/sign_up_view.dart';
+import '../../feature/sign_up/domain/usecases/sign_up_usecase.dart';
 import '../widgets/undefined_widget.dart';
-
 
 class AppRoute {
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.onBoarding:
         return MaterialPageRoute(builder: (_) => const OnboardingView());
-        case Routes.login:
-        return MaterialPageRoute(builder: (_) => BlocProvider(
-          create: (context) => LoginCubit(),
-          child: LoginView(),
-        ));
+      case Routes.register:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (BuildContext context) => SignUpCubit( ),
+            child: const SignUpView(),
+          ),
+        );
+      case Routes.login:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => LoginCubit(),
+            child: LoginView(),
+          ),
+        );
 
       default:
         return MaterialPageRoute(builder: (_) => const UndefinedPage());
     }
   }
-  }
+}

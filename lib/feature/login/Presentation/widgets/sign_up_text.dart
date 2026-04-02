@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/text_style.dart';
 
@@ -22,7 +23,9 @@ class SignUpText extends StatelessWidget {
               style: AppTextStyle.semiBold12(context).copyWith(
                 color: AppColors.primary,
               ),
-              recognizer: TapGestureRecognizer()..onTap = () {},
+              recognizer: TapGestureRecognizer()..onTap = () {
+                Navigator.pushNamed(context, Routes.register);
+              },
             ),
           ],
         ),
