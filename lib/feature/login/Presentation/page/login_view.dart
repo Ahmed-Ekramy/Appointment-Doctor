@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -40,11 +41,11 @@ class LoginView extends StatelessWidget {
                     const LoginHeader(),
                     SizedBox(height: 36.h),
                     CustomTextFormField(
-                      borderRadius: 16.r,
-                      controller: cubit.emailController,
-                      hintText: 'Email',
-                      keyboardType: TextInputType.emailAddress,
-                      validator:  AppValidators.email
+                        borderRadius: 16.r,
+                        controller: cubit.emailController,
+                        hintText: 'Email',
+                        keyboardType: TextInputType.emailAddress,
+                        validator: AppValidators.email
                     ),
                     SizedBox(height: 16.h),
                     CustomTextFormField(
@@ -52,12 +53,14 @@ class LoginView extends StatelessWidget {
                       controller: cubit.passwordController,
                       hintText: 'Password',
                       obscureText: cubit.isPasswordVisible,
-                      suffixIcon:   InkWell(
+                      suffixIcon: InkWell(
                           onTap: () {
                             cubit.changeVisibility();
                           },
-                          child: Icon(cubit.isPasswordVisible? Icons.visibility_off_outlined:Icons.visibility_outlined)),
-                      validator:  AppValidators.password,
+                          child: Icon(cubit.isPasswordVisible ? Icons
+                              .visibility_off_outlined : Icons
+                              .visibility_outlined)),
+                      validator: AppValidators.password,
                     ),
                     SizedBox(height: 16.h),
                     RememberMeAndForgot(
@@ -76,7 +79,7 @@ class LoginView extends StatelessWidget {
                       radius: 16,
                       onPressed: () {
                         if (cubit.formKey.currentState!.validate()) {
-
+                          Navigator.pushNamed(context, Routes.register);
                         }
                       },
                     ),
