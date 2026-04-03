@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -22,13 +23,35 @@ class SignUpView extends StatelessWidget {
         child: BlocConsumer<SignUpCubit, SignUpState>(
           listener: (context, state) {
             if (state is SignUpSuccess) {
+              Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sign up successful!')),
+                const SnackBar(
+                  backgroundColor: Colors.greenAccent,
+                  content: Text('Sign up successful!'),
+                ),
               );
+              Navigator.pushNamedAndRemoveUntil(context, Routes.layout, (route) => false);
+
             } else if (state is SignUpError) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.error)));
+              Navigator.pop(context);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.redAccent,
+                  content: Text(state.error),
+                ),
+              );
+            }
+            else if (state is SignUpLoading) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => const Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.primary,
+                  ),
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -140,7 +163,8 @@ class SignUpView extends StatelessWidget {
                           },
                         );
                       },
-                      validator: AppValidators.gender,),
+                      validator: AppValidators.gender,
+                    ),
                     SizedBox(height: 16.h),
                     CustomTextFormField(
                       controller: cubit.passwordController,
@@ -175,9 +199,7 @@ class SignUpView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 32.h),
-                    state is SignUpLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : CustomButton(
+                    CustomButton(
                             text: 'Create Account',
                             backgroundColor: AppColors.primary,
                             textColor: AppColors.backgroundWhite,
@@ -222,5 +244,3 @@ class SignUpView extends StatelessWidget {
     );
   }
 }
-
-

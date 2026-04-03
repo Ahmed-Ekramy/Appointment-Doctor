@@ -1,13 +1,10 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/responsive_size.dart';
-import '../../../../core/utils/text_style.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../manager/login_cubit.dart';
@@ -56,7 +53,6 @@ class LoginView extends StatelessWidget {
                   ),
                 );
               }
-              return null;
             },
 
             builder: (context, state) {
