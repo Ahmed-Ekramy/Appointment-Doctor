@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/text_style.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../manager/sign_up_cubit.dart';
+import '../widgets/gender_option_tile.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -24,9 +26,9 @@ class SignUpView extends StatelessWidget {
                 const SnackBar(content: Text('Sign up successful!')),
               );
             } else if (state is SignUpError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.error)));
             }
           },
           builder: (context, state) {
@@ -41,78 +43,118 @@ class SignUpView extends StatelessWidget {
                   children: [
                     Text(
                       'Create Account',
-                      style: AppTextStyle.bold24(context).copyWith(
-                        color: AppColors.primary,
-                      ),
+                      style: AppTextStyle.bold24(
+                        context,
+                      ).copyWith(color: AppColors.primary),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       'Sign up now and start exploring all that our app has to offer. We\'re excited to welcome you to our community!',
-                      style: AppTextStyle.regular14(context).copyWith(
-                        color: AppColors.grey60,
-                        height: 1.5,
-                      ),
+                      style: AppTextStyle.regular14(
+                        context,
+                      ).copyWith(color: AppColors.grey60, height: 1.5),
                     ),
                     SizedBox(height: 36.h),
                     CustomTextFormField(
                       controller: cubit.nameController,
                       hintText: 'Name',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Name is required';
-                        }
-                        return null;
-                      },
+                      validator: AppValidators.name,
                     ),
                     SizedBox(height: 16.h),
                     CustomTextFormField(
                       controller: cubit.emailController,
                       hintText: 'Email',
                       keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Email is required';
-                        }
-                        final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                        if (!emailRegex.hasMatch(value)) {
-                          return 'Enter a valid email';
-                        }
-                        return null;
-                      },
+                      validator: AppValidators.email,
                     ),
                     SizedBox(height: 16.h),
                     CustomTextFormField(
                       controller: cubit.phoneController,
                       hintText: 'Phone',
                       keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Phone is required';
-                        }
-                        if (value.length < 10) {
-                          return 'Enter a valid phone number';
-                        }
-                        return null;
-                      },
+                      validator: AppValidators.phone,
                     ),
+                    SizedBox(height: 16.h),
+                    CustomTextFormField(
+                      controller: cubit.genderController,
+                      hintText: 'Gender',
+                      readOnly: true,
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.white,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(28),
+                            ),
+                          ),
+                          builder: (context) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 24.w,
+                                vertical: 16.h,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      width: 40.w,
+                                      height: 4.h,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.grey20,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 24.h),
+                                  Text(
+                                    'Select Gender',
+                                    style: AppTextStyle.bold18(context),
+                                  ),
+                                  SizedBox(height: 24.h),
+                                  GenderOptionTile(
+                                    title: 'Male',
+                                    icon: Icons.male_rounded,
+                                    isSelected: cubit.selectedGender == 0,
+                                    onTap: () {
+                                      cubit.changeGender(0);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  GenderOptionTile(
+                                    title: 'Female',
+                                    icon: Icons.female_rounded,
+                                    isSelected: cubit.selectedGender == 1,
+                                    onTap: () {
+                                      cubit.changeGender(1);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  SizedBox(height: 24.h),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      validator: AppValidators.gender,),
                     SizedBox(height: 16.h),
                     CustomTextFormField(
                       controller: cubit.passwordController,
                       hintText: 'Password',
                       obscureText: cubit.isPasswordVisible,
                       suffixIcon: IconButton(
-                        icon: Icon(cubit.isPasswordVisible ? Icons.visibility_off : Icons.visibility),
+                        icon: Icon(
+                          cubit.isPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                         onPressed: cubit.changePasswordVisibility,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Password is required';
-                        }
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
+                      validator: AppValidators.password,
                     ),
                     SizedBox(height: 16.h),
                     CustomTextFormField(
@@ -120,18 +162,17 @@ class SignUpView extends StatelessWidget {
                       hintText: 'Confirm Password',
                       obscureText: cubit.isConfirmPasswordVisible,
                       suffixIcon: IconButton(
-                        icon: Icon(cubit.isConfirmPasswordVisible ? Icons.visibility_off : Icons.visibility),
+                        icon: Icon(
+                          cubit.isConfirmPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                         onPressed: cubit.changeConfirmPasswordVisibility,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please confirm your password';
-                        }
-                        if (value != cubit.passwordController.text) {
-                          return 'Passwords do not match';
-                        }
-                        return null;
-                      },
+                      validator: (value) => AppValidators.confirmPassword(
+                        value,
+                        cubit.passwordController.text,
+                      ),
                     ),
                     SizedBox(height: 32.h),
                     state is SignUpLoading
@@ -143,7 +184,9 @@ class SignUpView extends StatelessWidget {
                             width: double.infinity,
                             height: 52,
                             radius: 16,
-                            onPressed: cubit.signUp,
+                            onPressed: () {
+                              cubit.signUp();
+                            },
                           ),
                     SizedBox(height: 24.h),
                     Center(
@@ -151,16 +194,18 @@ class SignUpView extends StatelessWidget {
                         onTap: () => Navigator.pop(context),
                         child: RichText(
                           text: TextSpan(
-                            style: AppTextStyle.regular12(context).copyWith(
-                              color: AppColors.grey100,
-                            ),
+                            style: AppTextStyle.regular12(
+                              context,
+                            ).copyWith(color: AppColors.grey100),
                             children: [
-                              const TextSpan(text: 'Already have an account yet? '),
+                              const TextSpan(
+                                text: 'Already have an account yet? ',
+                              ),
                               TextSpan(
                                 text: 'Login',
-                                style: AppTextStyle.semiBold12(context).copyWith(
-                                  color: AppColors.primary,
-                                ),
+                                style: AppTextStyle.semiBold12(
+                                  context,
+                                ).copyWith(color: AppColors.primary),
                               ),
                             ],
                           ),
@@ -177,3 +222,5 @@ class SignUpView extends StatelessWidget {
     );
   }
 }
+
+

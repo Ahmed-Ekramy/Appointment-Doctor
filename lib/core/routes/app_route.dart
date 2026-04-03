@@ -11,6 +11,9 @@ import '../../feature/login/data/repositories/login_repository_impl.dart';
 import '../../feature/login/domain/usecases/login_usecase.dart';
 import '../../feature/onboarding/onboarding.dart';
 import '../../feature/sign_up/Presentation/page/sign_up_view.dart';
+import '../../feature/sign_up/data/datasources/sign_up_remote_data_source.dart';
+import '../../feature/sign_up/data/repositories/sign_up_repository_impl.dart';
+import '../../feature/sign_up/domain/usecases/sign_up_usecase.dart';
 import '../api/dio_consumer.dart';
 import '../widgets/undefined_widget.dart';
 
@@ -22,7 +25,15 @@ class AppRoute {
       case Routes.register:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (BuildContext context) => SignUpCubit(),
+            create: (BuildContext context) => SignUpCubit(
+              SignUpUseCase(
+                SignUpRepositoryImpl(
+                  SignUpRemoteDataSourceImpl(
+                    apiConsumer: DioConsumer(dio: Dio()),
+                  ),
+                ),
+              ),
+            ),
             child: const SignUpView(),
           ),
         );
