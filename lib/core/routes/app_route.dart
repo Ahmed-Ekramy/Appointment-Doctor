@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:doc/core/routes/route.dart';
+import 'package:doc/feature/layout/presentation/page/layout_view.dart';
 import 'package:doc/feature/login/Presentation/manager/login_cubit.dart';
 import 'package:doc/feature/sign_up/Presentation/manager/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,10 @@ import '../../feature/login/data/repositories/login_repository_impl.dart';
 import '../../feature/login/domain/usecases/login_usecase.dart';
 import '../../feature/onboarding/onboarding.dart';
 import '../../feature/sign_up/Presentation/page/sign_up_view.dart';
+import '../../feature/sign_up/data/datasources/sign_up_remote_data_source.dart';
+import '../../feature/sign_up/data/repositories/sign_up_repository_impl.dart';
+import '../../feature/sign_up/domain/usecases/sign_up_usecase.dart';
+import '../api/dio_consumer.dart';
 import '../widgets/undefined_widget.dart';
 
 class AppRoute {
@@ -19,7 +25,15 @@ class AppRoute {
       case Routes.register:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (BuildContext context) => SignUpCubit(),
+            create: (BuildContext context) => SignUpCubit(
+              SignUpUseCase(
+                SignUpRepositoryImpl(
+                  SignUpRemoteDataSourceImpl(
+                    apiConsumer: DioConsumer(dio: Dio()),
+                  ),
+                ),
+              ),
+            ),
             child: const SignUpView(),
           ),
         );
@@ -27,11 +41,19 @@ class AppRoute {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => LoginCubit(
-              LoginUseCase(LoginRepositoryImpl(LoginRemoteDataSourceImpl())),
+              LoginUseCase(
+                LoginRepositoryImpl(
+                  LoginRemoteDataSourceImpl(
+                    apiConsumer: DioConsumer(dio: Dio()),
+                  ),
+                ),
+              ),
             ),
             child: LoginView(),
           ),
         );
+      case Routes.layout:
+        return MaterialPageRoute(builder: (_) => const LayoutView());
 
       default:
         return MaterialPageRoute(builder: (_) => const UndefinedPage());

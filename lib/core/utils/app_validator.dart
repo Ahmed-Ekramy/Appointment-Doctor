@@ -1,10 +1,10 @@
 class AppValidators {
-  static String? required(String? value, {String field = "Field"}) {
-    if (value == null || value.trim().isEmpty) {
-      return "$field is required";
-    }
-    return null;
+static String? name(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Name is required";
   }
+  return null;
+}
 
   static String? email(String? value) {
     if (value == null || value.isEmpty) {
@@ -28,6 +28,35 @@ class AppValidators {
 
     if (value.length < 8) {
       return "Password must be at least 8 characters";
+    }
+    return null;
+  }
+  static String? confirmPassword(String? value, String password) {
+    if (value == null || value.isEmpty) {
+      return "Confirm password is required";
+    }
+    if (value != password) {
+      return "Passwords do not match";
+    }
+    return null;
+
+
+  }
+  static String? phone(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Phone number is required";
+    }
+
+    final phoneRegex = RegExp(r"^\d{11}$");
+    if (!phoneRegex.hasMatch(value)) {
+      return "Invalid phone number";
+    }
+
+    return null;
+  }
+  static String? gender(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Gender is required";
     }
     return null;
   }
