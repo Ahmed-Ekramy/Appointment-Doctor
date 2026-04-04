@@ -57,26 +57,14 @@ class AppTextStyle {
 
   // ── Responsive helpers ────────────────────────────────────────────────────
 
-  static double getScaleFactor(BuildContext context) {
-    double width = MediaQuery.sizeOf(context).width;
-    if (width < 600) {
-      return width / 400; // More appropriate for mobile
-    } else if (width < 900) {
-      return width / 700;
-    } else {
-      return width / 1000;
-
-  }
-  }
-
   static double getResponsiveFontSize(
     BuildContext context, {
     required double fontSize,
   }) {
-    double scaleFactor = getScaleFactor(context);
-    double responsiveFontSize = fontSize * scaleFactor;
+    double responsiveFontSize = ResponsiveSize.sp(fontSize);
     double lowerLimit = fontSize * 0.8;
     double upperLimit = fontSize * 1.2;
+
     return responsiveFontSize.clamp(lowerLimit, upperLimit);
   }
 
@@ -84,7 +72,6 @@ class AppTextStyle {
 
   static TextStyle _style(BuildContext context, double size, FontWeight weight) {
     return TextStyle(
-      fontFamily: 'Inter',
       fontSize: getResponsiveFontSize(context, fontSize: size),
       fontWeight: weight,
     );

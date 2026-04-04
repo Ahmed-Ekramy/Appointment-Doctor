@@ -14,6 +14,7 @@ import '../../feature/sign_up/Presentation/page/sign_up_view.dart';
 import '../../feature/sign_up/data/datasources/sign_up_remote_data_source.dart';
 import '../../feature/sign_up/data/repositories/sign_up_repository_impl.dart';
 import '../../feature/sign_up/domain/usecases/sign_up_usecase.dart';
+import '../../feature/home/Presentation/page/speciality_view.dart';
 import '../api/dio_consumer.dart';
 import '../widgets/undefined_widget.dart';
 
@@ -54,6 +55,8 @@ class AppRoute {
         );
       case Routes.layout:
         return MaterialPageRoute(builder: (_) => const LayoutView());
+      case Routes.speciality:
+        return MaterialPageRoute(builder: (_) => const SpecialityView());
 
       default:
         return MaterialPageRoute(builder: (_) => const UndefinedPage());
