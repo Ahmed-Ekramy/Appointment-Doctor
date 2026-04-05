@@ -6,14 +6,15 @@ import 'core/routes/route.dart';
 import 'core/utils/responsive_size.dart';
 
 class DocApp extends StatelessWidget {
- final AppRoute appRoute ;
-  const DocApp({super.key, required this.appRoute});
+  final AppRoute appRoute;
+  final String initialRoute;
+  const DocApp({super.key, required this.appRoute, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
     ResponsiveSize.init(context);
     return MaterialApp(
-      initialRoute: Routes.onBoarding,
+      initialRoute: initialRoute,
       onGenerateRoute: appRoute.generateRoute,
       theme: ThemeData(
         primaryColor: AppColors.primary,

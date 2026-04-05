@@ -1,3 +1,4 @@
+import '../../../../core/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -8,6 +9,8 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? username = CacheHelper.getData(key: 'username');
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -15,7 +18,7 @@ class HomeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hi, Omar!',
+              'Hi, ${username ?? 'Omar'}!',
               style: AppTextStyle.bold18(
                 context,
               ),

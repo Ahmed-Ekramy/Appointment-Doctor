@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/cache_helper.dart';
 import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_validator.dart';
@@ -26,14 +27,26 @@ class LoginView extends StatelessWidget {
           child: BlocConsumer<LoginCubit, LoginState>(
             listener: (context, state) {
               if (state is LoginSuccess) {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
+                Future.wait([
+                  CacheHelper.setData(
+                    key: 'token',
+                    value: state.loginResponseModel.data?.token,
+                  ),
+                  CacheHelper.setData(
+                    key: 'username',
+                    value: state.loginResponseModel.data?.username,
+                  ),
+                ]).then((value) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(state.loginResponseModel.message!),
                       backgroundColor: Colors.greenAccent,
                     ),
-                );
-                Navigator.pushNamedAndRemoveUntil(context, Routes.layout, (route) => false);
+                  );
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, Routes.layout, (route) => false);
+                });
               } else if (state is LoginError) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(

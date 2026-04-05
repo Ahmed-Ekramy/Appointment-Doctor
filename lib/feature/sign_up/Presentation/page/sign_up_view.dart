@@ -1,3 +1,4 @@
+import '../../../../core/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,18 +24,28 @@ class SignUpView extends StatelessWidget {
         child: BlocConsumer<SignUpCubit, SignUpState>(
           listener: (context, state) {
             if (state is SignUpSuccess) {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  backgroundColor: Colors.greenAccent,
-                  content: Text('Sign up successful!'),
+              Future.wait([
+                CacheHelper.setData(
+                  key: 'token',
+                  value: state.signUpResponseModel.data?.token,
                 ),
-              );
-              Navigator.pushNamedAndRemoveUntil(context, Routes.layout, (route) => false);
-
+                CacheHelper.setData(
+                  key: 'username',
+                  value: state.signUpResponseModel.data?.username,
+                ),
+              ]).then((value) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Colors.greenAccent,
+                    content: Text('Sign up successful!'),
+                  ),
+                );
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Routes.layout, (route) => false);
+              });
             } else if (state is SignUpError) {
               Navigator.pop(context);
-
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: Colors.redAccent,
