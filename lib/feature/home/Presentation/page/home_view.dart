@@ -1,4 +1,6 @@
+import 'package:doc/feature/home/Presentation/manager/home_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../widgets/home_header.dart';
 import '../widgets/promo_banner.dart';

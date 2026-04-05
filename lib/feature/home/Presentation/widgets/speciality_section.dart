@@ -1,5 +1,8 @@
+import 'package:doc/feature/home/Presentation/manager/home_cubit.dart';
+import 'package:doc/feature/home/Presentation/manager/home_state.dart';
 import 'package:doc/feature/home/Presentation/widgets/speciality_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_images.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -34,27 +37,38 @@ class SpecialitySection extends StatelessWidget {
           ],
         ),
         SizedBox(height: 16.h),
-        SizedBox(
-          height: 100.h,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 12,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(right: 16.w),
-                child: SpecialityItem(
-                  label: 'General',
-                  imagePath: AppImages.general,
+        BlocBuilder<HomeCubit, HomeState>(
+          buildWhen: (previous, current) =>
+              current is GetSpecialtyLoading ||
+              current is GetSpecialtySuccess ||
+              current is GetSpecialtyError,
+          builder: (context, state) {
+            if (state is GetSpecialtyLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is GetSpecialtySuccess) {
+              return SizedBox(
+                height: 100.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.specializationData.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 16.w),
+                      child: SpecialityItem(
+                        label: state.specializationData[index].name,
+                        imagePath: AppImages.general,
+                      ),
+                    );
+                  },
                 ),
               );
-            },
-          ),
+            } else if (state is GetSpecialtyError) {
+              return Center(child: Text(state.error));
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ],
     );
   }
-
-
 }
-
-

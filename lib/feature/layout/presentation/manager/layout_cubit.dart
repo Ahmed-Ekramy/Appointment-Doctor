@@ -1,7 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/api/dio_consumer.dart';
+import '../../../home/Presentation/manager/home_cubit.dart';
 import '../../../home/Presentation/page/home_view.dart';
-
+import '../../../home/data/datasources/home_remote_data_source.dart';
+import '../../../home/data/repositories/home_repository_impl.dart';
+import '../../../home/domain/usecases/get_specialty_usecase.dart';
 
 part 'layout_state.dart';
 
@@ -11,7 +16,18 @@ class LayoutCubit extends Cubit<LayoutState> {
   int currentIndex = 0;
 
   List<Widget> screens = [
-    const HomeView(),
+    BlocProvider(
+      create: (BuildContext context) {
+        return HomeCubit(
+          GetSpecialtyUseCase(
+            HomeRepositoryImpl(
+              HomeRemoteDataSourceImpl(apiConsumer: DioConsumer(dio: Dio()))..getSpecialty(),
+            ),
+          ),
+        );
+      },
+      child: const HomeView(),
+    ),
     const Center(child: Text('Chat Screen')),
     const Center(child: Text('Search Screen')),
     const Center(child: Text('My Appointment Screen')),
