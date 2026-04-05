@@ -20,6 +20,8 @@ class AppImages {
   static const String pediatric="assets/images/Pediatric.png";
   static const String urologist="assets/images/Urologist.png";
   static const String cardiologist="assets/images/cardiologist.png";
+  static const String orthopedics="assets/images/orthopedics.png";
+  static const String psychiatry="assets/images/psychiatry.png";
   static const String histologist="assets/images/histologist.png";
   static const String intestine="assets/images/intestine.png";
   static const String pulmonary="assets/images/pulmonary.png";

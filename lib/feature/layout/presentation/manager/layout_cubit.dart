@@ -21,10 +21,10 @@ class LayoutCubit extends Cubit<LayoutState> {
         return HomeCubit(
           GetSpecialtyUseCase(
             HomeRepositoryImpl(
-              HomeRemoteDataSourceImpl(apiConsumer: DioConsumer(dio: Dio()))..getSpecialty(),
+              HomeRemoteDataSourceImpl(apiConsumer: DioConsumer(dio: Dio()))
             ),
           ),
-        );
+        )..getSpecialty();
       },
       child: const HomeView(),
     ),

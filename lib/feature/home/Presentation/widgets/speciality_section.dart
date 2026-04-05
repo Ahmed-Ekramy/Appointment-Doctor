@@ -9,6 +9,39 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/text_style.dart';
 
+String getSpecialityImage(String? specialityName) {
+  switch (specialityName?.toLowerCase()) {
+    case 'cardiology':
+      return AppImages.cardiologist;
+    case 'dentistry':
+      return AppImages.dentistry;
+    case 'neurology':
+      return AppImages.brain;
+    case 'otolaryngology':
+      return AppImages.ent;
+    case 'gastroenterology':
+      return AppImages.intestine;
+    case 'hepatology':
+      return AppImages.hepatology;
+    case 'ophthalmology':
+      return AppImages.optometry;
+    case 'pediatrics':
+      return AppImages.pediatric;
+    case 'urology':
+      return AppImages.urologist;
+    case 'dermatology':
+      return AppImages.histologist;
+      case 'orthopedics':
+      return AppImages.orthopedics;
+    case 'psychiatry':
+      return AppImages.psychiatry;
+    case 'pulmonology':
+      return AppImages.pulmonary;
+    default:
+      return AppImages.general;
+  }
+}
+
 class SpecialitySection extends StatelessWidget {
   const SpecialitySection({super.key});
 
@@ -52,11 +85,12 @@ class SpecialitySection extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: state.specializationData.length,
                   itemBuilder: (context, index) {
+                    final speciality = state.specializationData[index];
                     return Padding(
                       padding: EdgeInsets.only(right: 16.w),
                       child: SpecialityItem(
-                        label: state.specializationData[index].name,
-                        imagePath: AppImages.general,
+                        label: speciality.name,
+                        imagePath: getSpecialityImage(speciality.name),
                       ),
                     );
                   },
