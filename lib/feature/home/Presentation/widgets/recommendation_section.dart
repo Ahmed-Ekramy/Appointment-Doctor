@@ -4,6 +4,7 @@ import 'package:doc/feature/home/Presentation/widgets/recommendation_doctor_item
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_images.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -34,7 +35,8 @@ class RecommendationSection extends StatelessWidget {
           children: [
             Text('Recommendation Doctor', style: AppTextStyle.bold18(context)),
             TextButton(
-              onPressed: () {},
+              onPressed: () =>
+                  Navigator.pushNamed(context, Routes.recommendationDoctor),
               child: Text(
                 'See All',
                 style: AppTextStyle.semiBold12(

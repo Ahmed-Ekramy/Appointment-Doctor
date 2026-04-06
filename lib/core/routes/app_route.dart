@@ -20,6 +20,7 @@ import '../../feature/sign_up/data/datasources/sign_up_remote_data_source.dart';
 import '../../feature/sign_up/data/repositories/sign_up_repository_impl.dart';
 import '../../feature/sign_up/domain/usecases/sign_up_usecase.dart';
 import '../../feature/home/Presentation/page/speciality_view.dart';
+import '../../feature/home/Presentation/page/recommendation_doctor_view.dart';
 import '../api/dio_consumer.dart';
 import '../widgets/undefined_widget.dart';
 
@@ -80,6 +81,29 @@ class AppRoute {
                 ),
             ))..getSpecialty(),
         child: const SpecialityView()));
+
+      case Routes.recommendationDoctor:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (BuildContext context) => HomeCubit(
+              GetSpecialtyUseCase(
+                HomeRepositoryImpl(
+                  HomeRemoteDataSourceImpl(
+                    apiConsumer: DioConsumer(dio: Dio()),
+                  ),
+                ),
+              ),
+              GetDoctorsUseCase(
+                HomeRepositoryImpl(
+                  HomeRemoteDataSourceImpl(
+                    apiConsumer: DioConsumer(dio: Dio()),
+                  ),
+                ),
+              ),
+            ),
+            child: const RecommendationDoctorView(),
+          ),
+        );
 
       default:
         return MaterialPageRoute(builder: (_) => const UndefinedPage());

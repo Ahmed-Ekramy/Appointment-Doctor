@@ -14,6 +14,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
+  // Local cache – populated once fetch succeeds
+  List<dynamic> _allDoctors = [];
+
   Future<void> getSpecialty() async {
     emit(GetSpecialtyLoading());
     var result = await getSpecialtyUseCase.call();
@@ -28,7 +31,23 @@ class HomeCubit extends Cubit<HomeState> {
     var result = await getDoctorsUseCase.call();
     result.fold(
       (l) => emit(GetDoctorsError(l)),
-      (r) => emit(GetDoctorsSuccess(r)),
+      (r) {
+        _allDoctors = r;
+        emit(GetDoctorsSuccess(r));
+      },
     );
+  }
+
+  // Filter the cached list locally – no extra network call
+  void searchDoctors(String query) {
+    final trimmed = query.trim().toLowerCase();
+    if (trimmed.isEmpty) {
+      emit(GetDoctorsSuccess(List.from(_allDoctors)));
+      return;
+    }
+    final filtered = _allDoctors
+        .where((d) => (d.name as String? ?? '').toLowerCase().contains(trimmed))
+        .toList();
+    emit(SearchDoctorsSuccess(List.from(filtered)));
   }
 }
