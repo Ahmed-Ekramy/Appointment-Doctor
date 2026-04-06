@@ -10,6 +10,7 @@ class RecommendationDoctorItem extends StatelessWidget {
   final String subtitle;
   final String rating;
   final String reviews;
+  final String? image;
 
   const RecommendationDoctorItem({
     super.key,
@@ -17,6 +18,7 @@ class RecommendationDoctorItem extends StatelessWidget {
     required this.subtitle,
     required this.rating,
     required this.reviews,
+    this.image,
   });
 
   @override
@@ -25,14 +27,27 @@ class RecommendationDoctorItem extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12.r),
-          child: Image.asset(
-            AppImages.doctor,
-            width: 110.w,
-            height: 110.h,
-            fit: BoxFit.cover,
-          ),
+          child: image != null && image!.isNotEmpty
+              ? Image.network(
+                  image!,
+                  width: 110.w,
+                  height: 110.h,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                    AppImages.doctor,
+                    width: 110.w,
+                    height: 110.h,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : Image.asset(
+                  AppImages.doctor,
+                  width: 110.w,
+                  height: 110.h,
+                  fit: BoxFit.cover,
+                ),
         ),
-         SizedBox(width: 16.w),
+        SizedBox(width: 16.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,25 +58,25 @@ class RecommendationDoctorItem extends StatelessWidget {
                   context,
                 ).copyWith(color: AppColors.grey100),
               ),
-               SizedBox(height: 8.w),
+              SizedBox(height: 8.w),
               Text(
                 subtitle,
                 style: AppTextStyle.medium12(
                   context,
                 ).copyWith(color: AppColors.grey60),
               ),
-               SizedBox(height: 12.w),
+              SizedBox(height: 12.w),
               Row(
                 children: [
                   const Icon(Icons.star, color: Colors.amber, size: 18),
-                   SizedBox(width: 4.w),
+                  SizedBox(width: 4.w),
                   Text(
                     rating,
                     style: AppTextStyle.medium12(
                       context,
                     ).copyWith(color: AppColors.grey100),
                   ),
-                   SizedBox(width: 4.w),
+                  SizedBox(width: 4.w),
                   Text(
                     reviews,
                     style: AppTextStyle.regular12(

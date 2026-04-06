@@ -6,6 +6,7 @@ import '../../../home/Presentation/manager/home_cubit.dart';
 import '../../../home/Presentation/page/home_view.dart';
 import '../../../home/data/datasources/home_remote_data_source.dart';
 import '../../../home/data/repositories/home_repository_impl.dart';
+import '../../../home/domain/usecases/get_doctors_usecase.dart';
 import '../../../home/domain/usecases/get_specialty_usecase.dart';
 
 part 'layout_state.dart';
@@ -24,7 +25,11 @@ class LayoutCubit extends Cubit<LayoutState> {
               HomeRemoteDataSourceImpl(apiConsumer: DioConsumer(dio: Dio()))
             ),
           ),
-        )..getSpecialty();
+          GetDoctorsUseCase( HomeRepositoryImpl(
+            HomeRemoteDataSourceImpl(apiConsumer: DioConsumer(dio: Dio()))
+          ),
+          ),
+        )..getSpecialty()..getDoctors();
       },
       child: const HomeView(),
     ),
