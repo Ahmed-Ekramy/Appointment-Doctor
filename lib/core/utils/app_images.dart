@@ -20,7 +20,19 @@ class AppImages {
   static const String pediatric="assets/images/Pediatric.png";
   static const String urologist="assets/images/Urologist.png";
   static const String cardiologist="assets/images/cardiologist.png";
+  static const String orthopedics="assets/images/orthopedics.png";
+  static const String psychiatry="assets/images/psychiatry.png";
   static const String histologist="assets/images/histologist.png";
   static const String intestine="assets/images/intestine.png";
   static const String pulmonary="assets/images/pulmonary.png";
+  static const String doctor1="assets/images/doctor.png";
+  static const String doctor2="assets/images/Doctor-2.png";
+  static const String doctor3="assets/images/Doctor-3.png";
+  static const String doctor4="assets/images/Doctor-4.png";
+  static const String doctor5="assets/images/Doctor-5.webp";
+  static const String doctor6="assets/images/Doctor-6.jpg";
+  static const String doctor7="assets/images/Doctor-7.webp";
+  static const String doctor8="assets/images/Doctor-8.jpg";
+  static const String doctor9="assets/images/Doctor-9.png";
+  static const String doctor10="assets/images/Doctor-10.png";
 }

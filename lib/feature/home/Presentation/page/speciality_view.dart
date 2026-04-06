@@ -1,30 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_images.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/text_style.dart';
+import '../manager/home_cubit.dart';
+import '../manager/home_state.dart';
 import '../widgets/speciality_grid_item.dart';
+import '../widgets/speciality_section.dart';
 
 class SpecialityView extends StatelessWidget {
   const SpecialityView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> specialities = [
-      {'name': 'General', 'image': AppImages.general},
-      {'name': 'ENT', 'image': AppImages.ent},
-      {'name': 'Pediatric', 'image': AppImages.pediatric},
-      {'name': 'Urologist', 'image': AppImages.urologist},
-      {'name': 'Dentistry', 'image': AppImages.dentistry},
-      {'name': 'Intestine', 'image': AppImages.intestine},
-      {'name': 'Histologist', 'image': AppImages.histologist},
-      {'name': 'Hepatology', 'image': AppImages.hepatology},
-      {'name': 'Cardiologist', 'image': AppImages.cardiologist},
-      {'name': 'Neurologic', 'image': AppImages.brain},
-      {'name': 'Pulmonary', 'image': AppImages.pulmonary},
-      {'name': 'Optometry', 'image': AppImages.optometry},
-    ];
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,26 +36,46 @@ class SpecialityView extends StatelessWidget {
             ),
           ),
         ),
-        title: Text('Doctor Speciality', style: AppTextStyle.bold18(context)),
+        title: Text('Doctor Specialization', style: AppTextStyle.bold18(context)),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(24.r),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 16.w,
-            mainAxisSpacing: 24.h,
-            childAspectRatio: 0.8,
-          ),
-          itemCount: specialities.length,
-          itemBuilder: (context, index) {
-            return SpecialityGridItem(
-              name: specialities[index]['name']!,
-              imagePath: specialities[index]['image']!,
-            );
-          },
-        ),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        buildWhen: (previous, current) =>
+            current is GetSpecialtyLoading ||
+            current is GetSpecialtySuccess ||
+            current is GetSpecialtyError,
+        builder: (context, state) {
+          if (state is GetSpecialtyError) {
+            return Center(child: Text(state.error));
+          }
+
+          return Skeletonizer(
+            enabled: state is GetSpecialtyLoading,
+            child: Padding(
+              padding: EdgeInsets.all(24.r),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 16.w,
+                  mainAxisSpacing: 24.h,
+                  childAspectRatio: 0.8,
+                ),
+                itemCount: state is GetSpecialtySuccess
+                    ? state.specializationData.length
+                    : 12,
+                itemBuilder: (context, index) {
+                  final speciality = state is GetSpecialtySuccess
+                      ? state.specializationData[index]
+                      : null;
+                  return SpecialityGridItem(
+                    name: speciality?.name ?? 'Specialization',
+                    imagePath: getSpecialityImage(speciality?.name),
+                  );
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
