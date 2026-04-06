@@ -11,6 +11,7 @@ class RecommendationDoctorItem extends StatelessWidget {
   final String rating;
   final String reviews;
   final String? image;
+  final String? assetImage;
 
   const RecommendationDoctorItem({
     super.key,
@@ -19,6 +20,7 @@ class RecommendationDoctorItem extends StatelessWidget {
     required this.rating,
     required this.reviews,
     this.image,
+    this.assetImage,
   });
 
   @override
@@ -27,25 +29,32 @@ class RecommendationDoctorItem extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12.r),
-          child: image != null && image!.isNotEmpty
-              ? Image.network(
-                  image!,
+          child: assetImage != null
+              ? Image.asset(
+                  assetImage!,
                   width: 110.w,
                   height: 110.h,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                    AppImages.doctor,
-                    width: 110.w,
-                    height: 110.h,
-                    fit: BoxFit.cover,
-                  ),
                 )
-              : Image.asset(
-                  AppImages.doctor,
-                  width: 110.w,
-                  height: 110.h,
-                  fit: BoxFit.cover,
-                ),
+              : image != null && image!.isNotEmpty
+                  ? Image.network(
+                      image!,
+                      width: 110.w,
+                      height: 110.h,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Image.asset(
+                        AppImages.doctor,
+                        width: 110.w,
+                        height: 110.h,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
+                      AppImages.doctor,
+                      width: 110.w,
+                      height: 110.h,
+                      fit: BoxFit.cover,
+                    ),
         ),
         SizedBox(width: 16.w),
         Expanded(

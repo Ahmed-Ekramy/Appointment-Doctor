@@ -4,8 +4,22 @@ import 'package:doc/feature/home/Presentation/widgets/recommendation_doctor_item
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_images.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/text_style.dart';
+
+List<String> doctorImages = [
+  AppImages.doctor1,
+  AppImages.doctor2,
+  AppImages.doctor3,
+  AppImages.doctor4,
+  AppImages.doctor5,
+  AppImages.doctor6,
+  AppImages.doctor7,
+  AppImages.doctor8,
+  AppImages.doctor9,
+  AppImages.doctor10,
+];
 
 class RecommendationSection extends StatelessWidget {
   const RecommendationSection({super.key});
@@ -40,7 +54,7 @@ class RecommendationSection extends StatelessWidget {
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.doctors.length,
+                itemCount: 7,
                 itemBuilder: (context, index) {
                   final doctor = state.doctors[index];
                   return Padding(
@@ -52,6 +66,7 @@ class RecommendationSection extends StatelessWidget {
                       rating: '4.8',
                       reviews: '(4,279 reviews)',
                       image: doctor.photo,
+                      assetImage: doctorImages[index % doctorImages.length],
                     ),
                   );
                 },
