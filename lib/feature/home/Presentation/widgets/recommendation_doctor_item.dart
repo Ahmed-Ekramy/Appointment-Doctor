@@ -34,7 +34,7 @@ class RecommendationDoctorItem extends StatelessWidget {
                   assetImage!,
                   width: 110.w,
                   height: 110.h,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.scaleDown,
                 )
               : image != null && image!.isNotEmpty
                   ? Image.network(
@@ -56,7 +56,7 @@ class RecommendationDoctorItem extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
         ),
-        SizedBox(width: 16.w),
+        SizedBox(width: 10.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +74,7 @@ class RecommendationDoctorItem extends StatelessWidget {
                   context,
                 ).copyWith(color: AppColors.grey60),
               ),
-              SizedBox(height: 12.w),
+              SizedBox(height: 8.w),
               Row(
                 children: [
                   const Icon(Icons.star, color: Colors.amber, size: 18),

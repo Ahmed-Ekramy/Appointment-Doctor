@@ -3,6 +3,7 @@ import 'package:doc/feature/home/Presentation/manager/home_state.dart';
 import 'package:doc/feature/home/Presentation/widgets/speciality_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../core/routes/route.dart';
 import '../../../../core/utils/app_images.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -53,7 +54,7 @@ class SpecialitySection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Doctor Speciality',
+              'Doctor Specialization',
               style: AppTextStyle.bold18(context),
             ),
             TextButton(
@@ -76,30 +77,33 @@ class SpecialitySection extends StatelessWidget {
               current is GetSpecialtySuccess ||
               current is GetSpecialtyError,
           builder: (context, state) {
-            if (state is GetSpecialtyLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is GetSpecialtySuccess) {
-              return SizedBox(
+            if (state is GetSpecialtyError) {
+              return Center(child: Text(state.error));
+            }
+            return Skeletonizer(
+              enabled: state is GetSpecialtyLoading,
+              child: SizedBox(
                 height: 100.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: state.specializationData.length,
+                  itemCount: state is GetSpecialtySuccess
+                      ? state.specializationData.length
+                      : 8,
                   itemBuilder: (context, index) {
-                    final speciality = state.specializationData[index];
+                    final speciality = state is GetSpecialtySuccess
+                        ? state.specializationData[index]
+                        : null;
                     return Padding(
                       padding: EdgeInsets.only(right: 16.w),
                       child: SpecialityItem(
-                        label: speciality.name,
-                        imagePath: getSpecialityImage(speciality.name),
+                        label: speciality?.name ?? '     Specialization       ',
+                        imagePath: getSpecialityImage(speciality?.name) ,
                       ),
                     );
                   },
                 ),
-              );
-            } else if (state is GetSpecialtyError) {
-              return Center(child: Text(state.error));
-            }
-            return const SizedBox.shrink();
+              ),
+            );
           },
         ),
       ],
