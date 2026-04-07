@@ -66,17 +66,28 @@ class RecommendationSection extends StatelessWidget {
                   final doctor = state is GetDoctorsSuccess
                       ? state.doctors[index]
                       : null;
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: RecommendationDoctorItem(
-                      name: doctor?.name ?? 'Doctor Name',
-                      subtitle: doctor != null
-                          ? '${doctor.specialization?.name} | ${doctor.city?.name}'
-                          : 'Specialization | City',
-                      rating: '4.8',
-                      reviews: '(4,279 reviews)',
-                      image: doctor?.photo,
-                      assetImage: doctorImages[index % doctorImages.length],
+                  return GestureDetector(
+                    onTap:  (){
+                      if (doctor != null) {
+                        Navigator.pushNamed(
+                          context,
+                          Routes.doctorDetails,
+                          arguments: doctor.id,
+                        );
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: RecommendationDoctorItem(
+                        name: doctor?.name ?? 'Doctor Name',
+                        subtitle: doctor != null
+                            ? '${doctor.specialization?.name} | ${doctor.city?.name}'
+                            : 'Specialization | City',
+                        rating: '4.8',
+                        reviews: '(4,279 reviews)',
+                        image: doctor?.photo,
+                        assetImage: doctorImages[index % doctorImages.length],
+                      ),
                     ),
                   );
                 },

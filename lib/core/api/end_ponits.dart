@@ -5,5 +5,5 @@ class EndPoint {
   static String logout = "/auth/logout";
   static String specialization = "/specialization/index";
   static String doctor = "/doctor/index";
-  static String recipesDetails ( int id) => "recipes/$id/information";
+  static String doctorDetails ( int id) => "/doctor/show/$id";
 }
