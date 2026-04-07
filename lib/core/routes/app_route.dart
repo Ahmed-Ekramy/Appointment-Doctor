@@ -3,8 +3,14 @@ import 'package:doc/core/routes/route.dart';
 import 'package:doc/feature/layout/presentation/page/layout_view.dart';
 import 'package:doc/feature/login/Presentation/manager/login_cubit.dart';
 import 'package:doc/feature/sign_up/Presentation/manager/sign_up_cubit.dart';
+import 'package:dio/dio.dart';
+import 'package:doc/core/api/dio_consumer.dart';
+import 'package:doc/feature/doctor_details/data/datasources/doctor_details_remote_data_source.dart';
+import 'package:doc/feature/doctor_details/data/repositories/doctor_details_repository_impl.dart';
+import 'package:doc/feature/doctor_details/presentation/manager/doctor_details_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../feature/doctor_details/presentation/page/doctor_details_view.dart';
 import '../../feature/home/Presentation/manager/home_cubit.dart';
 import '../../feature/home/data/datasources/home_remote_data_source.dart';
 import '../../feature/home/data/repositories/home_repository_impl.dart';
@@ -104,7 +110,20 @@ class AppRoute {
             child: const RecommendationDoctorView(),
           ),
         );
-
+      case Routes.doctorDetails:
+        final int id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => DoctorDetailsCubit(
+              DoctorDetailsRepositoryImpl(
+                remoteDataSource: DoctorDetailsRemoteDataSourceImpl(
+                  apiConsumer: DioConsumer(dio: Dio()),
+                ),
+              ),
+            )..getDoctorDetails(id),
+            child: const DoctorDetailsView(),
+          ),
+        );
       default:
         return MaterialPageRoute(builder: (_) => const UndefinedPage());
     }

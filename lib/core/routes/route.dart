@@ -5,4 +5,5 @@ class Routes {
   static const String layout               = '/layout';
   static const String speciality           = '/speciality';
   static const String recommendationDoctor = '/recommendationDoctor';
+  static const String doctorDetails        = '/doctorDetails';
 }
